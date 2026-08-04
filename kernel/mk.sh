@@ -23,7 +23,7 @@ kernel_build()
         make distclean
         make clean
         make O=../build i386_defconfig 
-        make O=../build -j$(nproc) 
+        make O=../build LOCALVERSION= -j$(nproc) 
         cd -
         echo "make linux-2.6.35.6 finished ..." 
 }
