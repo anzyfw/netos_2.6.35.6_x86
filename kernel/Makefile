@@ -39,19 +39,23 @@ config:
 	cp -a config.x86_32 $(ABS_BUILD_DIR)/.config
 
 # 3. 只编译内核
+menuconfig:
+	$(KERNEL_MAKE) menuconfig
+
+# 4. 只编译内核
 bzImage:
 	mkdir -p $(ABS_BUILD_DIR)
 	$(KERNEL_MAKE) bzImage -j$(nproc) $(MAKE_EXTRA)
 
-# 4. 只编译模块
+# 5. 只编译模块
 modules:
 	mkdir -p $(ABS_BUILD_DIR)
 	$(KERNEL_MAKE) modules -j$(nproc) $(MAKE_EXTRA)
 
-# 5.安装命令依然是 make install，安装到 target 目录
+# 6.安装命令依然是 make install，安装到 target 目录
 install:
 	mkdir -p $(ABS_TARGET_DIR)/boot
 	$(KERNEL_MAKE) INSTALL_MOD_PATH=$(ABS_TARGET_DIR) modules_install
 	cp -arf $(ABS_BUILD_DIR)/arch/x86/boot/bzImage $(ABS_TARGET_DIR)/boot
 
-.PHONY: all clean config bzImage modules install
+.PHONY: all clean config menuconfig bzImage modules install
